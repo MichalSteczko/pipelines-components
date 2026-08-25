@@ -33,12 +33,37 @@ SUPPORTED_RUNTIMES: tuple[str, ...] = ("podman", "docker")
 _CONTAINER_RUNTIME_ENV = "CONTAINER_RUNTIME"
 
 _INDEX_URL_RE = re.compile(r"^--index-url\s+(\S+)", re.MULTILINE)
+_MARKER_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s;]+)\s*;\s*(.+)", re.MULTILINE)
 _REQUIREMENTS_IN = "requirements.in"
 _REQUIREMENTS_TXT = "requirements.txt"
 
 
 class RefreshRequirementsError(Exception):
     """Raised when requirements refresh cannot proceed."""
+
+
+def read_markers_from_in(requirements_in: Path) -> dict[str, str]:
+    """Return a mapping of package name → marker for entries in requirements.in that declare one."""
+    content = requirements_in.read_text(encoding="utf-8")
+    return {
+        m.group(1).lower(): m.group(3).strip()
+        for m in _MARKER_RE.finditer(content)
+    }
+
+
+def restore_markers_in_txt(requirements_txt: Path, markers: dict[str, str]) -> None:
+    """Re-apply markers from requirements.in that uv pip compile dropped into requirements.txt."""
+    if not markers:
+        return
+    content = requirements_txt.read_text(encoding="utf-8")
+    for name, marker in markers.items():
+        # Match e.g. "triton==3.6.0 \" or "triton==3.6.0\n" without an existing marker
+        pattern = re.compile(
+            rf"^({re.escape(name)}==[^\s;\\]+)([ \t]*(?:\\|\n))",
+            re.MULTILINE | re.IGNORECASE,
+        )
+        content = pattern.sub(rf"\1 ; {marker}\2", content)
+    requirements_txt.write_text(content, encoding="utf-8")
 
 
 def read_index_url(requirements_in: Path) -> str | None:
@@ -181,11 +206,14 @@ def compile_pipeline_requirements(
     print(f"  index-url: {sanitize_index_url_for_log(index_url)}")
     print(f"  runtime: {runtime}")
     print(f"  image: {container_image}")
+    markers = read_markers_from_in(requirements_in)
     run_kwargs: dict[str, object] = {"check": True, "timeout": 3600}
     if not verbose:
         run_kwargs["stdout"] = subprocess.DEVNULL
         run_kwargs["stderr"] = subprocess.DEVNULL
     subprocess.run(command, **run_kwargs)
+    if not dry_run and markers:
+        restore_markers_in_txt(pipeline_dir / _REQUIREMENTS_TXT, markers)
 
 
 def refresh_pipeline_requirements(
