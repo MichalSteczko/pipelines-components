@@ -38,13 +38,13 @@ googleapis-common-protos==1.75.0 \
     --hash=sha256:371cd0ca347d6b331c0f70fbbf7aa5cbbba6092d91d27c9bbfab7701a1b6612d
 idna==3.18 \
     --hash=sha256:8a16d5d6db808e4640e6bad7349f52e09b10eba58914fb7d366902ec4fc226a8
-kfp==2.16.1 \
+kfp==2.17.0 \
     --hash=sha256:440ba61a951702b8d8d962c5c830e03bdf436ba0ae9ee44414cfa31cdbff8c0e
-kfp-kubernetes==2.16.1 \
+kfp-kubernetes==2.17.0 \
     --hash=sha256:6f8acf61bb8691b078e1d09f9e99a96aae7970dbe72a5604815de06884e2b68e
-kfp-pipeline-spec==2.16.1 \
+kfp-pipeline-spec==2.17.0 \
     --hash=sha256:39605f781aa48527ddb59c84f37240135970c117305d44131d76fd68ccb448e4
-kfp-server-api==2.16.1 \
+kfp-server-api==2.17.0 \
     --hash=sha256:97a52d31d5fbe533c1beb2f6bfd5060bf1494893c7cce4a88af8510b57baba97
 kubernetes==36.0.3 \
     --hash=sha256:8fa78b23a212533a45eda88b56515f4a5d953df468ac759f1a34574d7e53cc3d
