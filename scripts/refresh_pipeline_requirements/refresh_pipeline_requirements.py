@@ -45,10 +45,7 @@ class RefreshRequirementsError(Exception):
 def read_markers_from_in(requirements_in: Path) -> dict[str, str]:
     """Return a mapping of package name → marker for entries in requirements.in that declare one."""
     content = requirements_in.read_text(encoding="utf-8")
-    return {
-        m.group(1).lower(): m.group(3).strip()
-        for m in _MARKER_RE.finditer(content)
-    }
+    return {m.group(1).lower(): m.group(3).strip() for m in _MARKER_RE.finditer(content)}
 
 
 def restore_markers_in_txt(requirements_txt: Path, markers: dict[str, str]) -> None:
