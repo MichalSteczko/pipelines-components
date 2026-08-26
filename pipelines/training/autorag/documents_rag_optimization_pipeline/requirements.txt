@@ -322,10 +322,10 @@ jsonschema-specifications==2025.9.1 \
 kfp==2.16.1 \
     --hash=sha256:6c5d4ed22749aa9cc4b2ff850e563272be9bb8ea9f6d26b8a3c5308bce0555eb
     # via -r requirements.in
-kfp-pipeline-spec==2.16.1 \
+kfp-pipeline-spec==2.17.0 \
     --hash=sha256:39605f781aa48527ddb59c84f37240135970c117305d44131d76fd68ccb448e4
     # via kfp
-kfp-server-api==2.16.1 \
+kfp-server-api==2.17.0 \
     --hash=sha256:97a52d31d5fbe533c1beb2f6bfd5060bf1494893c7cce4a88af8510b57baba97
     # via kfp
 kubernetes==36.0.3 \
