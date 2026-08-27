@@ -12,7 +12,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "kfp>=2.16.1",
-    "kfp-kubernetes>=2.16.1"
+    "kfp-kubernetes>=2.16.1",
+    "protobuf<6.32"
 ]
 
 [project.optional-dependencies]
@@ -31,6 +32,7 @@ test = [
     "pytest",
     "pytest-cov",
     "pytest-timeout",
+    "semver",
     "setuptools",
     # Component-specific SDK deps required for python_func() tests.
     # KFP SubprocessRunner cannot auto-install these because it does not
@@ -40,7 +42,6 @@ test = [
     "sdg-hub>=0.7.0,<1.0",
     # Required for pipeline validation (validate_examples, validate_base_images)
     "kfp-kubernetes",
-    "jsonschema",
 ]
 # Dependencies for AutoGluon pipeline integration tests (RHOAI + S3 + KFP)
 test_automl = [
@@ -71,6 +72,7 @@ packages = [
     "kfp_components.components.data_processing.autorag",
     "kfp_components.components.data_processing.autorag.documents_discovery",
     "kfp_components.components.data_processing.autorag.documents_indexing",
+    "kfp_components.components.data_processing.autorag.test_data_loader",
     "kfp_components.components.data_processing.autorag.text_extraction",
     "kfp_components.components.data_processing.dataset_download",
     "kfp_components.components.data_processing.download_model",
